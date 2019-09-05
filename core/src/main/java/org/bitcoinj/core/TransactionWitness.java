@@ -55,6 +55,10 @@ public class TransactionWitness {
         return pushes.size();
     }
 
+    public boolean isEmpty() {
+        return pushes.isEmpty();
+    }
+
     public void setPush(int i, byte[] value) {
         while (i >= pushes.size()) {
             pushes.add(new byte[]{});
@@ -105,5 +109,15 @@ public class TransactionWitness {
             hashCode = 31 * hashCode + (push == null ? 0 : Arrays.hashCode(push));
         }
         return hashCode;
+    }
+
+    public TransactionWitness copy() {
+        int numPushes = pushes.size();
+        TransactionWitness copy = new TransactionWitness(numPushes);
+        for (int i = 0; i < numPushes; i++) {
+            byte[] push = pushes.get(i);
+            copy.setPush(i, Arrays.copyOf(push, push.length));
+        }
+        return copy;
     }
 }
